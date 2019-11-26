@@ -32,11 +32,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @EnableJpaRepositories("com.sunitkatkar.blogspot")
 @EnableConfigurationProperties
-@Sql({"/populate-tenants-test.sql"})
 @ActiveProfiles(profiles = "test")
 public class MasterTenantServiceImplTest {
-
-
 
     @Autowired
     MasterTenantRepository masterTenantRepository;
@@ -45,9 +42,10 @@ public class MasterTenantServiceImplTest {
     MasterTenantService masterTenantService;
 
     @Before
-    public void setUp() throws Exception {
-
+    public void setup(){
+        assertThat(masterTenantRepository.findAll().isEmpty(),is(false));
     }
+
 
     @Test
     public void findTenant() {
@@ -66,6 +64,9 @@ public class MasterTenantServiceImplTest {
         masterTenant.setUrl("jdbc:h2:mem:db/tenant2");
         masterTenant.setVersion(0);
         masterTenantService.addTenant(masterTenant);
+        assertThat(masterTenantRepository.findAll().size(),is(2));
+        MasterTenant tenant2 = masterTenantRepository.findByTenantId("tenant2");
+        assertThat(tenant2.getId(),is(2L));
     }
 
 

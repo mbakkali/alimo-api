@@ -61,7 +61,7 @@ import com.sunitkatkar.blogspot.tenant.service.UserService;
         transactionManagerRef = "tenantTransactionManager")
 public class TenantDatabaseConfig {
 
-    @Value("${custom.jpa.dialect}")
+    @Value("${spring.jpa.database-platform}")
     private String dialect;
 
     private static final Logger LOG = LoggerFactory

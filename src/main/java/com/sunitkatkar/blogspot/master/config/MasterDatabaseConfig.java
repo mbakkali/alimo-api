@@ -54,7 +54,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(basePackages = { "com.sunitkatkar.blogspot.master.model",
         "com.sunitkatkar.blogspot.master.repository" }, entityManagerFactoryRef = "masterEntityManagerFactory", transactionManagerRef = "masterTransactionManager")
 public class MasterDatabaseConfig {
-    @Value("${custom.jpa.dialect}")
+    @Value("${spring.jpa.database-platform}")
     private String dialect;
 
     private static final Logger LOG = LoggerFactory

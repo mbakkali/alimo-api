@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceUtil {
 
-    @Value("${custom.jpa.dialect}")
+    @Value("${spring.jpa.database-platform}")
     private String dialect;
 
     private static final Logger LOG = LoggerFactory

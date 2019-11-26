@@ -15,6 +15,7 @@
  */
 package com.sunitkatkar.blogspot.tenant.config;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,6 +62,8 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
     private MasterTenantRepository masterTenantRepo;
     @Autowired
     private DataSourceUtil dataSourceUtil;
+    @Autowired
+    private Environment environment;
 
     /**
      * Map to store the tenant ids as key and the data source as the value
@@ -73,8 +77,18 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
         // entries.
         if (dataSourcesMtApp.isEmpty()) {
             List<MasterTenant> masterTenants = masterTenantRepo.findAll();
+            if(masterTenants.isEmpty() && Arrays.asList(environment.getActiveProfiles()).contains("test")){
+                MasterTenant masterTenant = new MasterTenant();
+                masterTenant.setId(2L);
+                masterTenant.setPassword("root");
+                masterTenant.setTenantId("tenant1");
+                masterTenant.setUsername("root");
+                masterTenant.setTenantId("tenant1");
+                masterTenant.setUrl("jdbc:h2:mem:db/tenant1");
+                masterTenant.setVersion(0);
+                masterTenantRepo.save(masterTenant);
+            }
             LOG.info(">>>> selectAnyDataSource() -- Total tenants:" + masterTenants.size());
-
             for (MasterTenant masterTenant : masterTenants) {
                 dataSourcesMtApp.put(masterTenant.getTenantId(),
                         dataSourceUtil.createAndConfigureDataSource(masterTenant));
@@ -94,6 +108,8 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
             List<MasterTenant> masterTenants = masterTenantRepo.findAll();
             LOG.info(
                     ">>>> selectDataSource() -- tenant:" + tenantIdentifier + " Total tenants:" + masterTenants.size());
+
+
             for (MasterTenant masterTenant : masterTenants) {
                 dataSourcesMtApp.put(masterTenant.getTenantId(),
                         dataSourceUtil.createAndConfigureDataSource(masterTenant));

@@ -17,15 +17,19 @@ package com.sunitkatkar.blogspot.web;
 
 import java.util.Optional;
 
+import com.sunitkatkar.blogspot.tenant.model.User;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sunitkatkar.blogspot.tenant.model.CustomUserDetails;
- 
+
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class LoginController {
@@ -59,7 +63,7 @@ public class LoginController {
     }
 
     @RequestMapping("/login")
-    public String login() {
+    public String login(@ModelAttribute User greeting) {
         return "login";
     }
 

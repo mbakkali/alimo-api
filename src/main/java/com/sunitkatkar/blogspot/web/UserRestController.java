@@ -37,9 +37,8 @@ public class UserRestController {
             @PathVariable("tenantId") String tenantId) {
         TenantContextHolder.setTenantId(tenantId);
         List<User> users = userService.findAllUsers();
-        List<String> userList = users.stream().map(result -> result.toString())
+        return users.stream().map(result -> result.toString())
                 .collect(Collectors.toList());
-        return userList;
     }
 
 }
