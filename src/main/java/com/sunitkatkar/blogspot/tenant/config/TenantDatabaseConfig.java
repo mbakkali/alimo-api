@@ -26,6 +26,7 @@ import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -59,6 +60,9 @@ import com.sunitkatkar.blogspot.tenant.service.UserService;
         entityManagerFactoryRef = "tenantEntityManagerFactory",
         transactionManagerRef = "tenantTransactionManager")
 public class TenantDatabaseConfig {
+
+    @Value("${custom.jpa.dialect}")
+    private String dialect;
 
     private static final Logger LOG = LoggerFactory
             .getLogger(TenantDatabaseConfig.class);
@@ -135,7 +139,7 @@ public class TenantDatabaseConfig {
         // properties.put("hibernate.ejb.naming_strategy",
         // "org.hibernate.cfg.ImprovedNamingStrategy");
         properties.put(org.hibernate.cfg.Environment.DIALECT,
-                "org.hibernate.dialect.PostgreSQLDialect");
+               dialect);
         properties.put(org.hibernate.cfg.Environment.SHOW_SQL, true);
         properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
         properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");

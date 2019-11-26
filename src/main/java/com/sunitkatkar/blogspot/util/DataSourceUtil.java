@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.sunitkatkar.blogspot.master.model.MasterTenant;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility class for DataSource
@@ -32,7 +34,11 @@ import com.zaxxer.hikari.HikariDataSource;
  * @version 1.0
  *
  */
-public final class DataSourceUtil {
+@Component
+public class DataSourceUtil {
+
+    @Value("${custom.jpa.dialect}")
+    private String dialect;
 
     private static final Logger LOG = LoggerFactory
             .getLogger(DataSourceUtil.class);
@@ -43,13 +49,13 @@ public final class DataSourceUtil {
      * @param masterTenant
      * @return
      */
-    public static DataSource createAndConfigureDataSource(
+    public DataSource createAndConfigureDataSource(
             MasterTenant masterTenant) {
         HikariDataSource ds = new HikariDataSource();
         ds.setUsername(masterTenant.getUsername());
         ds.setPassword(masterTenant.getPassword());
         ds.setJdbcUrl(masterTenant.getUrl());
-        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setDriverClassName(dialect);
 
         // HikariCP settings - could come from the master_tenant table but
         // hardcoded here for brevity

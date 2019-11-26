@@ -58,6 +58,8 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
      */
     @Autowired
     private MasterTenantRepository masterTenantRepo;
+    @Autowired
+    private DataSourceUtil dataSourceUtil;
 
     /**
      * Map to store the tenant ids as key and the data source as the value
@@ -72,9 +74,10 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
         if (dataSourcesMtApp.isEmpty()) {
             List<MasterTenant> masterTenants = masterTenantRepo.findAll();
             LOG.info(">>>> selectAnyDataSource() -- Total tenants:" + masterTenants.size());
+
             for (MasterTenant masterTenant : masterTenants) {
                 dataSourcesMtApp.put(masterTenant.getTenantId(),
-                        DataSourceUtil.createAndConfigureDataSource(masterTenant));
+                        dataSourceUtil.createAndConfigureDataSource(masterTenant));
             }
         }
         return this.dataSourcesMtApp.values().iterator().next();
@@ -93,7 +96,7 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
                     ">>>> selectDataSource() -- tenant:" + tenantIdentifier + " Total tenants:" + masterTenants.size());
             for (MasterTenant masterTenant : masterTenants) {
                 dataSourcesMtApp.put(masterTenant.getTenantId(),
-                        DataSourceUtil.createAndConfigureDataSource(masterTenant));
+                        dataSourceUtil.createAndConfigureDataSource(masterTenant));
             }
         }
         return this.dataSourcesMtApp.get(tenantIdentifier);

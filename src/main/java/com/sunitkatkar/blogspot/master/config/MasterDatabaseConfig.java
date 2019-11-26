@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -53,6 +54,8 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(basePackages = { "com.sunitkatkar.blogspot.master.model",
         "com.sunitkatkar.blogspot.master.repository" }, entityManagerFactoryRef = "masterEntityManagerFactory", transactionManagerRef = "masterTransactionManager")
 public class MasterDatabaseConfig {
+    @Value("${custom.jpa.dialect}")
+    private String dialect;
 
     private static final Logger LOG = LoggerFactory
             .getLogger(MasterDatabaseConfig.class);
@@ -180,7 +183,7 @@ public class MasterDatabaseConfig {
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put(org.hibernate.cfg.Environment.DIALECT,
-                "org.hibernate.dialect.PostgreSQLDialect");
+                dialect);
         properties.put(org.hibernate.cfg.Environment.SHOW_SQL, true);
         properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
         properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
