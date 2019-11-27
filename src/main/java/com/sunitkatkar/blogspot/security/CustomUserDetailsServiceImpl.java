@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import com.sunitkatkar.blogspot.tenant.model.CustomUserDetails;
 import com.sunitkatkar.blogspot.tenant.model.Role;
 import com.sunitkatkar.blogspot.tenant.model.User;
-import com.sunitkatkar.blogspot.tenant.service.UserService;
 
 /**
  * {@link CustomUserDetailsService} contract defines a single method called

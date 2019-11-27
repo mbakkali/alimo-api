@@ -15,20 +15,36 @@
  */
 package com.sunitkatkar.blogspot.tenant.service;
 
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.sunitkatkar.blogspot.tenant.model.Role;
+import com.sunitkatkar.blogspot.tenant.repository.RoleRepository;
 
 /**
- * Service definition which accesses the {@link Role} entity. This is the
- * recommended way to access the entities through an interface rather than using
- * the corresponding repository. This allows for separation into repository code
- * and the service layer.
+ * Implementation of the {@link RoleService} which accesses the {@link Role}
+ * entity. This is the recommended way to access the entities through an
+ * interface rather than using the corresponding repository. This allows for
+ * separation into repository code and the service layer.
  * 
  * @author Sunit Katkar, sunitkatkar@gmail.com
  *         (https://sunitkatkar.blogspot.com/)
  * @since ver 1.0 (May 2018)
  * @version 1.0
  */
-public interface RoleService {
+@Service
+@Log
+public class RoleService {
 
-    Role findByRole(String roleName);
+    @Autowired
+    private RoleRepository roleRepository;
+
+    public Role findByRole(String roleName) {
+        Role role = roleRepository.findByRole(roleName);
+        log.info("Role:" + role.getRole() + " found");
+        return role;
+    }
 }

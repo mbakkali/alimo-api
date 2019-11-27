@@ -40,7 +40,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.sunitkatkar.blogspot.tenant.model.User;
 import com.sunitkatkar.blogspot.tenant.repository.UserRepository;
-import com.sunitkatkar.blogspot.tenant.service.UserService;
 
 /**
  * This is the tenant data sources configuration which sets up the multitenancy.

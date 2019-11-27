@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sunitkatkar.blogspot.util.TenantContextHolder;
 import com.sunitkatkar.blogspot.tenant.model.User;
-import com.sunitkatkar.blogspot.tenant.service.UserService;
 
 /**
  * Rest Controller to handle all requests to the /user end point

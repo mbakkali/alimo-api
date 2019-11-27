@@ -42,4 +42,5 @@ public interface MasterTenantRepository
      */
     @Query("select p from MasterTenant p where p.tenantId = :tenantId")
     MasterTenant findByTenantId(@Param("tenantId") String tenantId);
+    boolean existsByTenantId(String tenant);
 }

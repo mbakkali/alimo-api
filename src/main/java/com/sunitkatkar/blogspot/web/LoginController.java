@@ -15,9 +15,12 @@
  */
 package com.sunitkatkar.blogspot.web;
 
-import java.util.Optional;
-
+import com.sunitkatkar.blogspot.tenant.model.CustomUserDetails;
 import com.sunitkatkar.blogspot.tenant.model.User;
+import com.sunitkatkar.blogspot.tenant.service.UserService;
+import com.sunitkatkar.blogspot.web.exceptions.UserNotFoundException;
+import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,19 +28,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.sunitkatkar.blogspot.tenant.model.CustomUserDetails;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 
 @Controller
+@Log
 public class LoginController {
 
     @RequestMapping("/")
     public String root() {
         return "redirect:/index";
     }
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/index")
     public String index(Model model) {
@@ -62,10 +68,22 @@ public class LoginController {
         return "user/index";
     }
 
-    @RequestMapping("/login")
-    public String login(@ModelAttribute User greeting) {
+    @RequestMapping(value = "/login", method= RequestMethod.POST)
+    public String login(@ModelAttribute(value="user") User user) {
         return "login";
     }
+    @RequestMapping(value = "/register", method= RequestMethod.POST)
+    public String register(@ModelAttribute(value="user") User user) {
+        if(userService.tenantExists(user.getTenant())){
+
+            log.info("Tenant is known");
+        }else {
+            log.warning("User is not known");
+            throw new UserNotFoundException("Utilisateur introuvable");
+        }
+        return "login";
+    }
+
 
     private Optional<String> getLoggedInUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

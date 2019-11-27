@@ -15,23 +15,35 @@
  */
 package com.sunitkatkar.blogspot.master.service;
 
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sunitkatkar.blogspot.master.model.MasterTenant;
+import com.sunitkatkar.blogspot.master.repository.MasterTenantRepository;
 
 /**
- * Service definition which accesses the {@link MasterTenant} entity. This is
- * the recommended way to access the entities through an interface rather than
- * using the corresponding repository. This allows for separation into
- * repository code and the service layer.
- *
+ * Implementation of the {@link MasterTenantService} which accesses the
+ * {@link MasterTenant} entity. This is the recommended way to access the
+ * entities through an interface rather than using the corresponding repository.
+ * This allows for separation into repository code and the service layer.
+ * 
  * @author Sunit Katkar, sunitkatkar@gmail.com
  *         (https://sunitkatkar.blogspot.com/)
  * @since ver 1.0 (May 2018)
  * @version 1.0
  */
-public interface MasterTenantService {
-    
-    MasterTenant findByTenantId(@Param("tenantId") String tenantId);
-    MasterTenant addTenant(MasterTenant masterTenant);
+@Service
+public class MasterTenantService {
+
+    @Autowired
+    MasterTenantRepository masterTenantRepo;
+
+    public MasterTenant findByTenantId(String tenantId) {
+        return masterTenantRepo.findByTenantId(tenantId);
+    }
+    public MasterTenant addTenant(MasterTenant masterTenant) {
+        return masterTenantRepo.save(masterTenant);
+    }
+
+
 }
