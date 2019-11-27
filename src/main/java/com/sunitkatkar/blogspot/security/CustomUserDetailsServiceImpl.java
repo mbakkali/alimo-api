@@ -19,6 +19,7 @@ package com.sunitkatkar.blogspot.security;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.sunitkatkar.blogspot.tenant.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -62,7 +63,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
         }
         // Look for the user based on the username and tenant by accessing the
         // UserRepository via the UserService
-        User user = userService.findByUsernameAndTenantname(username, tenant);
+        User user = userService.findByEmailAndTenantname(username, tenant);
 
         if (user == null) {
             throw new UsernameNotFoundException(
@@ -78,7 +79,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
         }
 
         CustomUserDetails customUserDetails = new CustomUserDetails(
-                user.getUsername(), user.getPassword(), grantedAuthorities,
+                user.getEmail(), user.getPassword(), grantedAuthorities,
                 tenant);
 
         return customUserDetails;

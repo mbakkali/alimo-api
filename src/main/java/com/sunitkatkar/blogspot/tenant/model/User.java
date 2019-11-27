@@ -63,7 +63,7 @@ public class User implements Serializable {
 
     @Column(name = "username")
     @NotNull(message = "*Please provide your username")
-    private String username;
+    private String email;
 
     @Column(name = "password")
     @Length(min = 5, message = "*Your password must have at least 5 characters")
@@ -101,12 +101,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

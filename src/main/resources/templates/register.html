@@ -13,7 +13,7 @@
 <body>
 <div class="container">
     <form class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
-        <h2 class="form-signin-heading">Please Register</h2>
+        <h2 class="form-signin-heading">Please sign in</h2>
         <p>Example: user / domain / password</p>
         <p th:if="${param.error}" class="error">Invalid user, password, or domain</p>
         <p>
@@ -28,7 +28,7 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" th:field="*{password}" id="password" name="password" class="form-control" placeholder="Password" required autofocus/>
         </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button><br/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button><br/>
     </form>
 </div>
 </body>

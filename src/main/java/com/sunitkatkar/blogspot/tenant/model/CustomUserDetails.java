@@ -48,14 +48,14 @@ public class CustomUserDetails
      * argument <code>tenant</code> to store the tenant name submitted by the
      * end user.
      * 
-     * @param username
+     * @param email
      * @param password
      * @param authorities
      * @param tenant
      */
-    public CustomUserDetails(String username, String password,
+    public CustomUserDetails(String email, String password,
             Collection<? extends GrantedAuthority> authorities, String tenant) {
-        super(username, password, authorities);
+        super(email, password, authorities);
         this.tenant = tenant;
     }
 

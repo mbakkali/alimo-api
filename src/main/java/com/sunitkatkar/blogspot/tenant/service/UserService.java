@@ -57,7 +57,7 @@ public class UserService {
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User justSavedUser = userRepository.save(user);
-        log.info("User:" + justSavedUser.getUsername() + " saved.");
+        log.info("User:" + justSavedUser.getEmail() + " saved.");
         return justSavedUser;
     }
 
@@ -72,10 +72,10 @@ public class UserService {
         return null;
     }
 
-    public User findByUsernameAndTenantname(String username, String tenant) {
+    public User findByEmailAndTenantname(String username, String tenant) {
         User user = userRepository.findByUsernameAndTenantname(username,
                 tenant);
-        log.info("Found user with username:" + user.getUsername()
+        log.info("Found user with username:" + user.getEmail()
                 + " from tenant:" + user.getTenant());
         return user;
     }

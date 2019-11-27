@@ -18,6 +18,8 @@ package com.sunitkatkar.blogspot.web;
 import com.sunitkatkar.blogspot.tenant.model.CustomUserDetails;
 import com.sunitkatkar.blogspot.tenant.model.User;
 import com.sunitkatkar.blogspot.tenant.service.UserService;
+import com.sunitkatkar.blogspot.web.dtos.UserDTO;
+import com.sunitkatkar.blogspot.web.exceptions.TenantNotFoundException;
 import com.sunitkatkar.blogspot.web.exceptions.UserNotFoundException;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -47,7 +49,7 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index(Model model) {
-        getLoggedInUsername().ifPresent(f -> {
+        getLoggedInEmail().ifPresent(f -> {
             model.addAttribute("userName", f);
         });
         getTenantName().ifPresent(d -> {
@@ -59,7 +61,7 @@ public class LoginController {
 
     @RequestMapping("/user/index")
     public String userIndex(Model model) {
-        getLoggedInUsername().ifPresent(f -> {
+        getLoggedInEmail().ifPresent(f -> {
             model.addAttribute("userName", f);
         });
         getTenantName().ifPresent(d -> {
@@ -68,24 +70,33 @@ public class LoginController {
         return "user/index";
     }
 
-    @RequestMapping(value = "/login", method= RequestMethod.POST)
-    public String login(@ModelAttribute(value="user") User user) {
+    @RequestMapping("/login")
+    public String login() {
         return "login";
     }
-    @RequestMapping(value = "/register", method= RequestMethod.POST)
-    public String register(@ModelAttribute(value="user") User user) {
-        if(userService.tenantExists(user.getTenant())){
 
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@RequestParam UserDTO userDTO) {
+        if(userService.tenantExists(userDTO.getTenant())){
             log.info("Tenant is known");
+            User user = userService.findByEmailAndTenantname(userDTO.getUsername(),userDTO.getTenant());
+            if( user != null ){
+                getLoggedInEmail();
+                getTenantName();
+            }else {
+                log.warning("User is not known");
+                throw new UserNotFoundException("Utilisateur introuvable");
+            }
         }else {
-            log.warning("User is not known");
-            throw new UserNotFoundException("Utilisateur introuvable");
+            log.warning("Tenant is not known");
+            throw new TenantNotFoundException("Utilisateur introuvable");
         }
         return "login";
     }
 
 
-    private Optional<String> getLoggedInUsername() {
+    private Optional<String> getLoggedInEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = null;
         if (auth != null && !auth.getClass().equals(AnonymousAuthenticationToken.class)) {

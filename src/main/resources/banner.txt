@@ -6,3 +6,4 @@
 Swagger : http://localhost:8080/swagger-ui.html
 Actuator : http://localhost:8080/actuator
 Logs : http://localhost:8080/actuator/logfile
+Health : http://localhost:8080/actuator/health
