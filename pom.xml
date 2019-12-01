@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.sunitkatkar.blogspot</groupId>
-	<artifactId>multitenancy-dynamic-tenant</artifactId>
+	<groupId>com.alimo</groupId>
+	<artifactId>alimo-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>multitenancy-dynamic-tenant</name>
+	<name>alimo-api</name>
 	<description>
 		Spring Boot JPA Hibernate with database per tenant with dynamic configuration 
 		of tenants, secured by Spring Security
